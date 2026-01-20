@@ -576,6 +576,9 @@
 !endif
 
 [PcdsFixedAtBuild]
+gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase | 0x3F8
+gEfiMdeModulePkgTokenSpaceGuid.PcdSerialBaudRate     | 115200
+gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseMmio      | FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
 !if $(SMM_REQUIRE) == FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
