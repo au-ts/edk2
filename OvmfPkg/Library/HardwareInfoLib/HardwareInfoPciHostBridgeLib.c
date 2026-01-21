@@ -391,7 +391,7 @@ HardwareInfoPciHostBridgeGetApertures (
                HostBridge->PMemAbove4GStart,
                HostBridge->PMemAbove4GSize,
                MAX_UINT64,
-               PMem
+               PMemAbove4G
                );
     StickyError |= EFI_ERROR (Status);
   }
