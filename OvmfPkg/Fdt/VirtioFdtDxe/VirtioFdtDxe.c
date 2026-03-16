@@ -124,7 +124,9 @@ InitializeVirtioFdtDxe (
       continue;
     }
 
+    DEBUG((DEBUG_INFO, "=========== mmio install device 1\n"));
     Status = VirtioMmioInstallDevice (RegBase, Handle);
+    DEBUG((DEBUG_INFO, "=========== mmio install device 2\n"));
     if (EFI_ERROR (Status)) {
       DEBUG ((
         DEBUG_ERROR,
@@ -156,6 +158,8 @@ InitializeVirtioFdtDxe (
       FindNodeStatus
       ));
   }
+
+  DEBUG((DEBUG_INFO, "=========== mmio install device success\n"));
 
   return EFI_SUCCESS;
 }

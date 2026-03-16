@@ -306,18 +306,23 @@ NorFlashFvbInitialize (
     // Erase all the NorFlash that is reserved for variable storage
     FvbNumLba = (PcdGet32 (PcdFlashNvStorageVariableSize) + PcdGet32 (PcdFlashNvStorageFtwWorkingSize) + PcdGet32 (PcdFlashNvStorageFtwSpareSize)) / Instance->BlockSize;
 
+    DEBUG ((DEBUG_INFO, "%a: erasing blocks.\n", __func__));
     Status = FvbEraseBlocks (&Instance->FvbProtocol, (EFI_LBA)0, FvbNumLba, EFI_LBA_LIST_TERMINATOR);
+    DEBUG ((DEBUG_INFO, "%a: finished erasing blocks.\n", __func__));
     if (EFI_ERROR (Status)) {
       return Status;
     }
 
     // Install all appropriate headers
+    DEBUG ((DEBUG_INFO, "%a: install headers.\n", __func__));
     Status = InitializeFvAndVariableStoreHeaders (Instance);
+    DEBUG ((DEBUG_INFO, "%a: finish install headers.\n", __func__));
     if (EFI_ERROR (Status)) {
       return Status;
     }
   }
 
+  DEBUG ((DEBUG_INFO, "%a: protocol interface.\n", __func__));
   //
   // The driver implementing the variable read service can now be dispatched;
   // the varstore headers are in place.
@@ -330,6 +335,7 @@ NorFlashFvbInitialize (
                   );
   ASSERT_EFI_ERROR (Status);
 
+  DEBUG ((DEBUG_INFO, "%a: eventex.\n", __func__));
   //
   // Register for the virtual address change event
   //
@@ -343,5 +349,6 @@ NorFlashFvbInitialize (
                   );
   ASSERT_EFI_ERROR (Status);
 
+  DEBUG ((DEBUG_INFO, "%a: return.\n", __func__));
   return Status;
 }

@@ -736,24 +736,29 @@ VirtioBlkInit (
   AlignmentOffset  = 0;
   OptIoSize        = 0;
 
+  DEBUG((DEBUG_INFO, "%a: enter\n", __func__));
+
   //
   // Execute virtio-0.9.5, 2.2.1 Device Initialization Sequence.
   //
   NextDevStat = 0;             // step 1 -- reset device
   Status      = Dev->VirtIo->SetDeviceStatus (Dev->VirtIo, NextDevStat);
   if (EFI_ERROR (Status)) {
+    DEBUG((DEBUG_INFO, "%a: failed 1\n", __func__));
     goto Failed;
   }
 
   NextDevStat |= VSTAT_ACK;    // step 2 -- acknowledge device presence
   Status       = Dev->VirtIo->SetDeviceStatus (Dev->VirtIo, NextDevStat);
   if (EFI_ERROR (Status)) {
+    DEBUG((DEBUG_INFO, "%a: failed 2\n", __func__));
     goto Failed;
   }
 
   NextDevStat |= VSTAT_DRIVER; // step 3 -- we know how to drive it
   Status       = Dev->VirtIo->SetDeviceStatus (Dev->VirtIo, NextDevStat);
   if (EFI_ERROR (Status)) {
+    DEBUG((DEBUG_INFO, "%a: failed 3\n", __func__));
     goto Failed;
   }
 
@@ -762,6 +767,7 @@ VirtioBlkInit (
   //
   Status = Dev->VirtIo->SetPageSize (Dev->VirtIo, EFI_PAGE_SIZE);
   if (EFI_ERROR (Status)) {
+    DEBUG((DEBUG_INFO, "%a: failed 4\n", __func__));
     goto Failed;
   }
 
@@ -770,6 +776,7 @@ VirtioBlkInit (
   //
   Status = Dev->VirtIo->GetDeviceFeatures (Dev->VirtIo, &Features);
   if (EFI_ERROR (Status)) {
+    DEBUG((DEBUG_INFO, "%a: failed 5\n", __func__));
     goto Failed;
   }
 

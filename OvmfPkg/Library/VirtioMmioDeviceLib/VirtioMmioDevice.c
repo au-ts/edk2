@@ -62,22 +62,27 @@ VirtioMmioInit (
   //
   // Initialize VirtIo Mmio Device
   //
+  DEBUG((DEBUG_INFO, "%a 1\n", __func__));
   CopyMem (
     &Device->VirtioDevice,
     &mMmioDeviceProtocolTemplate,
     sizeof (VIRTIO_DEVICE_PROTOCOL)
     );
+  DEBUG((DEBUG_INFO, "%a 2, addr: 0x%lx\n", __func__, BaseAddress + VIRTIO_MMIO_OFFSET_DEVICE_ID));
   Device->BaseAddress                    = BaseAddress;
   Device->VirtioDevice.SubSystemDeviceId =
     MmioRead32 (BaseAddress + VIRTIO_MMIO_OFFSET_DEVICE_ID);
+  DEBUG((DEBUG_INFO, "%a 3\n", __func__));
 
   //
   // Double-check MMIO-specific values
   //
   MagicValue = VIRTIO_CFG_READ (Device, VIRTIO_MMIO_OFFSET_MAGIC);
+  DEBUG((DEBUG_INFO, "%a 4\n", __func__));
   if (MagicValue != VIRTIO_MMIO_MAGIC) {
     return EFI_UNSUPPORTED;
   }
+  DEBUG((DEBUG_INFO, "%a 5\n", __func__));
 
   Device->Version = VIRTIO_CFG_READ (Device, VIRTIO_MMIO_OFFSET_VERSION);
   switch (Device->Version) {
@@ -154,7 +159,9 @@ VirtioMmioInstallDevice (
 
   VirtIo->Signature = VIRTIO_MMIO_DEVICE_SIGNATURE;
 
+  DEBUG((DEBUG_INFO, "=========== mmio init 1\n"));
   Status = VirtioMmioInit (BaseAddress, VirtIo);
+  DEBUG((DEBUG_INFO, "=========== mmio init 2\n"));
   if (EFI_ERROR (Status)) {
     goto FreeVirtioMem;
   }
@@ -162,12 +169,14 @@ VirtioMmioInstallDevice (
   //
   // Install VIRTIO_DEVICE_PROTOCOL to Handle
   //
+  DEBUG((DEBUG_INFO, "=========== mmio init 3\n"));
   Status = gBS->InstallProtocolInterface (
                   &Handle,
                   &gVirtioDeviceProtocolGuid,
                   EFI_NATIVE_INTERFACE,
                   &VirtIo->VirtioDevice
                   );
+  DEBUG((DEBUG_INFO, "=========== mmio init 4\n"));
   if (EFI_ERROR (Status)) {
     goto UninitVirtio;
   }
