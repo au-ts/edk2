@@ -321,7 +321,8 @@ BdsWait (
 
   DEBUG ((DEBUG_INFO, "[Bds]BdsWait ...Zzzzzzzzzzzz...\n"));
 
-  TimeoutRemain = PcdGet16 (PcdPlatformBootTimeOut);
+  // TimeoutRemain = PcdGet16 (PcdPlatformBootTimeOut);
+  TimeoutRemain = 0;
   while (TimeoutRemain != 0) {
     DEBUG ((DEBUG_INFO, "[Bds]BdsWait(%d)..Zzzz...\n", (UINTN)TimeoutRemain));
     PlatformBootManagerWaitCallback (TimeoutRemain);
